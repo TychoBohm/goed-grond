@@ -41,19 +41,21 @@ export default function Index({ tasks }: { tasks: PaginatedData<Task> }) {
                     <TableBody>
                         {tasks &&
                             tasks.data &&
-                            tasks.data.map((task: Task) => (
-                                <TableRow>
-                                    <TableCell className="font-medium">{task.id}</TableCell>
-                                    <TableCell>{task.title}</TableCell>
-                                    <TableCell>{task.created_at}</TableCell>
-                                    <TableCell className="space-x-2 text-right">
-                                        <TextLink href={route('tasks.edit', { id: task.id })}>Edit</TextLink>
-                                        <Button variant="destructive" size="sm" onClick={() => destroy(task.id)}>
-                                            Delete
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                            tasks.data
+                                .sort((a: Task, b: Task) => (a.id > b.id ? 1 : -1))
+                                .map((task: Task) => (
+                                    <TableRow key={task.id}>
+                                        <TableCell className="font-medium">{task.id}</TableCell>
+                                        <TableCell>{task.title}</TableCell>
+                                        <TableCell>{task.created_at}</TableCell>
+                                        <TableCell className="space-x-2 text-right">
+                                            <TextLink href={route('tasks.edit', { id: task.id })}>Edit</TextLink>
+                                            <Button variant="destructive" size="sm" onClick={() => destroy(task.id)}>
+                                                Delete
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
                     </TableBody>
                 </Table>
             </div>
