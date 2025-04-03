@@ -17,7 +17,10 @@ class AnalyseFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'method' => $this->faker->word,
+            'resultaat' => $this->faker->sentence,
+            'datum' => $this->faker->date(),
+            // 'project_id' => \App\Models\Project::factory(),
         ];
     }
 }

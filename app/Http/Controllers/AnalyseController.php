@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Analyse;
 use App\Http\Requests\StoreAnalyseRequest;
 use App\Http\Requests\UpdateAnalyseRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class AnalyseController extends Controller
 {
@@ -13,7 +17,9 @@ class AnalyseController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Analyses/Index', [
+            'analyses' => Analyse::latest()->get(),
+        ]);
     }
 
     /**
@@ -21,7 +27,7 @@ class AnalyseController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Analyses/Create');
     }
 
     /**
@@ -29,7 +35,9 @@ class AnalyseController extends Controller
      */
     public function store(StoreAnalyseRequest $request)
     {
-        //
+        Analyse::create($request->validated());
+
+        return to_route('analyses.index');
     }
 
     /**
@@ -37,7 +45,9 @@ class AnalyseController extends Controller
      */
     public function show(Analyse $analyse)
     {
-        //
+        return Inertia::render('Analyses/Show', [
+            'analyse' => $analyse,
+        ]);
     }
 
     /**
@@ -45,7 +55,9 @@ class AnalyseController extends Controller
      */
     public function edit(Analyse $analyse)
     {
-        //
+        return Inertia::render('Analyses/Edit', [
+            'analyse' => $analyse,
+        ]);
     }
 
     /**
@@ -53,7 +65,9 @@ class AnalyseController extends Controller
      */
     public function update(UpdateAnalyseRequest $request, Analyse $analyse)
     {
-        //
+        $analyse->update($request->validated());
+
+        return to_route('analyses.index');
     }
 
     /**
@@ -61,6 +75,8 @@ class AnalyseController extends Controller
      */
     public function destroy(Analyse $analyse)
     {
-        //
+        $analyse->delete();
+
+        return to_route('analyses.index');
     }
 }

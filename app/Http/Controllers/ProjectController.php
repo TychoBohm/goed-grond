@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ProjectController extends Controller
 {
@@ -13,7 +17,9 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        return inertia('Projects/Index', [
+            'projects' => Project::latest()->get(),
+        ]);
     }
 
     /**
@@ -21,7 +27,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('Projects/Create', [
+        ]);
     }
 
     /**
@@ -29,7 +36,9 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        //
+        Project::create($request->validated());
+
+        return to_route('projects.index');
     }
 
     /**
@@ -37,7 +46,10 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        //
+        return inertia('Projects/Show', [
+            'project' => $project,
+            'analyses' => $project->analyses,
+        ]);
     }
 
     /**
@@ -45,7 +57,9 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return inertia('Projects/Edit', [
+            'project' => $project,
+        ]);
     }
 
     /**
@@ -53,7 +67,9 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        $project->update($request->validated());
+
+        return to_route('projects.index');
     }
 
     /**
@@ -61,6 +77,8 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $project->delete();
+
+        return to_route('projects.index');
     }
 }

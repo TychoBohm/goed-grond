@@ -14,6 +14,12 @@ class AnalyseResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'method' => $this->method,
+            'resultaat' => $this->resultaat,
+            'datum' => $this->datum,
+            'project_id' => $this->project_id,
+        ];
     }
 }

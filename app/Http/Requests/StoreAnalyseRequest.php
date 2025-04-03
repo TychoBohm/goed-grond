@@ -11,7 +11,7 @@ class StoreAnalyseRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return auth()->check();
     }
 
     /**
@@ -22,7 +22,10 @@ class StoreAnalyseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'method' => 'required|string|max:255',
+            'resultaat' => 'required|string|max:255',
+            'datum' => 'required|date',
+            'project_id' => 'required|exists:projects,id',
         ];
     }
 }
