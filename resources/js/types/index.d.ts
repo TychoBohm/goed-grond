@@ -66,3 +66,43 @@ export interface Task {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface Project {
+    data: {
+        id: number;
+        titel: string;
+        opdrachtgever: string;
+        locatie: Position;
+        analyses: List<Analysis>;
+        grond: Record<string, number>;
+        toepassingen: List<string>;
+        created_at: string;
+    };
+    id: number;
+    titel: string;
+    opdrachtgever: string;
+    locatie: Position;
+    analyses: List<Analysis>;
+    grond: List<string, number>;
+    toepassingen: List<string>;
+    created_at: string;
+    [key: string]: unknown; // This allows for additional properties...
+}
+
+export interface Analysis {
+    data?: {
+        id: number;
+        methode: string;
+        resultaten: List<number>;
+        project_id: number;
+        datum: string;
+        created_at: string;
+    };
+    id: number;
+    methode: string;
+    resultaten: List<number>;
+    project_id: number;
+    datum: string;
+    created_at: string;
+    [key: string]: unknown; // This allows for additional properties...
+}
