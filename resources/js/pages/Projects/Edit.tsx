@@ -2,7 +2,6 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, Position, Project } from '@/types';
@@ -13,10 +12,10 @@ import { FormEventHandler } from 'react';
 interface ProjectForm {
     titel: string;
     opdrachtgever: string;
-    locatie: Position; // Using any for now as Position type isn't fully defined
-    grond: Record<string, number>; // Using any for now as List<string, number> type isn't fully defined
-    toepassingen: string[]; // Using any for now as List<string> type isn't fully defined
-    [key: string]: any;
+    locatie: Position;
+    grond: Record<string, number>;
+    toepassingen: string[];
+    [key: string]: string | { lat: number, lng: number } | Record<string, number> | string[];
 }
 
 export default function Edit({ project }: { project: Project }) {

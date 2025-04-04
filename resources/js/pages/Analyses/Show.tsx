@@ -1,7 +1,7 @@
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem, Analysis, Project } from '@/types';
+import type { BreadcrumbItem, Analysis } from '@/types';
 import { Head, router } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
