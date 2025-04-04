@@ -1,12 +1,17 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { Analysis, BreadcrumbItem, Project } from '@/types';
-import { Head } from '@inertiajs/react';
-import { InfoIcon } from 'lucide-react';
+import { Head, router } from '@inertiajs/react';
+import { InfoIcon, PlusIcon } from 'lucide-react';
 
-export default function Show({ project }: { project: {data: Project} }) {
+export default function Show({ project, analyses }: { project: {data: Project}, analyses: {data: Analysis[]} }) {
+
+    console.log(analyses);
+    console.log(project);
+    
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Projecten Lijst',
@@ -46,9 +51,25 @@ export default function Show({ project }: { project: {data: Project} }) {
                         <div>
                             <h3 className="mb-2 text-lg font-semibold">Locatie</h3>
                             {project.data.locatie ? (
-                                <div className="grid grid-cols-2 gap-2">
-                                    <p>Latitude: {project.data.locatie.lat || 'Niet gespecificeerd'}</p>
-                                    <p>Longitude: {project.data.locatie.lng || 'Not gespecificeerd'}</p>
+                                <div className="space-y-4">
+                                    <div className="flex items-center justify-begin">
+                                        <div className="text-center">
+                                            <div className="text-xl font-medium">
+                                                {project.data.locatie.lat?.toFixed(6) || 'Niet gespecificeerd'}° N
+                                            </div>
+                                            <div className="text-sm text-gray-500">Breedtegraad</div>
+                                        </div>
+                                        <div className="mx-6 h-12 w-px bg-gray-200"></div>
+                                        <div className="text-center">
+                                            <div className="text-xl font-medium">
+                                                {project.data.locatie.lng?.toFixed(6) || 'Niet gespecificeerd'}° O
+                                            </div>
+                                            <div className="text-sm text-gray-500">Lengtegraad</div>
+                                        </div>
+                                    </div>
+                                    <div className="text-start text-sm text-gray-500">
+                                        Coördinaten in decimale graden
+                                    </div>
                                 </div>
                             ) : (
                                 <Alert variant="default">
@@ -60,30 +81,28 @@ export default function Show({ project }: { project: {data: Project} }) {
                         </div>
 
                         <div>
-                            <h3 className="mb-2 text-lg font-semibold">Analyses</h3>
-                            {project.data.analyses && project.data.analyses.length > 0 ? (
+                            <div className="flex items-center justify-between mb-2">
+                                <h3 className="text-lg font-semibold">Analyses</h3>
+                                <Button
+                                    onClick={() => router.visit(route('analyses.create', { project_id: project.data.id }))}
+                                    variant="outline"
+                                    size="sm"
+                                >
+                                    <PlusIcon className="h-4 w-4 mr-2" />
+                                    Analyse Toevoegen
+                                </Button>
+                            </div>
+                            {analyses.data && analyses.data.length > 0 ? (
                                 <div className="space-y-4">
-                                    {project.data.analyses.map((analysis: Analysis, index: number) => (
-                                        <Card key={index} className="p-4">
-                                            <h4 className="font-medium">Methode: {analysis.data.methode}</h4>
-                                            <p className="text-sm text-gray-500">Gedaan op: {new Date(analysis.data.created_at).toLocaleDateString()}</p>
-
-                                            <div className="mt-2">
-                                                <h5 className="text-sm font-medium">Resultaten:</h5>
-                                                {analysis.data.resultaten && analysis.data.resultaten.length > 0 ? (
-                                                    <div className="mt-1 grid grid-cols-3 gap-2">
-                                                        {analysis.data.resultaten.map((result: number, idx: number) => (
-                                                            <Badge key={idx} variant="outline">
-                                                                {result}
-                                                            </Badge>
-                                                        ))}
-                                                    </div>
-                                                ) : (
-                                                    <p className="text-sm text-gray-500">Geen resultaten beschikbaar</p>
-                                                )}
-                                            </div>
+                                    <div className="grid grid-cols-4 gap-2">
+                                    {analyses.data.map((analysis: Analysis, index: number) => (
+                                        <Card key={index} className="p-4 col-span-1">
+                                            <h4 className="font-medium">Methode: {analysis.methode}</h4>
+                                            <h3 className="font-medium">Resultaat: {analysis.resultaat}</h3>
+                                            <p className="text-sm text-gray-500">Gedaan op: {new Date(analysis.datum).toLocaleDateString()}</p>
                                         </Card>
-                                    ))}
+                                        ))}
+                                    </div>
                                 </div>
                             ) : (
                                 <Alert variant="default">
@@ -97,11 +116,19 @@ export default function Show({ project }: { project: {data: Project} }) {
                         <div>
                             <h3 className="mb-2 text-lg font-semibold">Grond Samenstelling</h3>
                             {project.data.grond && Object.keys(project.data.grond).length > 0 ? (
-                                <div className="grid grid-cols-2 gap-2">
+                                <div className="space-y-2">
                                     {Object.entries(project.data.grond).map(([type, value], index) => (
-                                        <div key={index} className="flex justify-between">
-                                            <span>{type}:</span>
-                                            <span>{value}</span>
+                                        <div key={index} className="flex items-center gap-2">
+                                            <div className="w-32 font-medium">{type}</div>
+                                            <div className="flex-1">
+                                                <div className="h-2 bg-gray-200 rounded-full">
+                                                    <div 
+                                                        className="h-full bg-primary rounded-full" 
+                                                        style={{width: `${value}%`}}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="w-16 text-right">{String(value)}%</div>
                                         </div>
                                     ))}
                                 </div>

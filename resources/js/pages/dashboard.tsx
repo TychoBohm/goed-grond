@@ -80,9 +80,9 @@ function LatestAnalysis({ analyses }: { analyses: { data: Analysis[] } }) {
                                             className="hover:bg-muted/50 cursor-pointer"
                                             onClick={() => handleAnalysisClick(analysis.id)}
                                         >
-                                            <TableCell>{analysis.datum}</TableCell>
+                                            <TableCell>{new Date(analysis.datum).toLocaleDateString()}</TableCell>
                                             <TableCell>{analysis.methode}</TableCell>
-                                            <TableCell>{analysis.project_id}</TableCell>
+                                            <TableCell>{analysis.project_name}</TableCell>
                                         </TableRow>
                                     ))}
                         </TableBody>

@@ -67,6 +67,11 @@ export interface Task {
     [key: string]: unknown; // This allows for additional properties...
 }
 
+export interface Position {
+    lat: number;
+    lng: number;
+}
+
 export interface Project {
     data: {
         id: number;
@@ -93,15 +98,17 @@ export interface Analysis {
     data?: {
         id: number;
         methode: string;
-        resultaten: List<number>;
+        resultaat: number;
         project_id: number;
+        project_name: string;
         datum: string;
         created_at: string;
     };
     id: number;
     methode: string;
-    resultaten: List<number>;
+    resultaat: number;
     project_id: number;
+    project_name: string;
     datum: string;
     created_at: string;
     [key: string]: unknown; // This allows for additional properties...
