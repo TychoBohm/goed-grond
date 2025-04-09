@@ -19,7 +19,7 @@ function LatestProjects({ projects }: { projects: { data: Project[] } }) {
         <div className="border-sidebar-border/70 dark:border-sidebar-border relative min-h-[87.5vh] overflow-hidden rounded-xl border">
             <div className="flex size-full flex-col items-center justify-between gap-4 p-4">
                 <TableCaption>Een lijst van de laatste 10 projecten.</TableCaption>
-                {projects && projects.data.length > 0 ? (
+                {projects && projects.data && projects.data.length > 0 ? (
                     <Table className="w-full">
                         <TableHeader>
                         <TableRow>
