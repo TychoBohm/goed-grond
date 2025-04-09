@@ -96,7 +96,11 @@ export default function Show({ project, analyses }: { project: {data: Project}, 
                                 <div className="space-y-4">
                                     <div className="grid grid-cols-4 gap-2">
                                     {analyses.data.map((analysis: Analysis, index: number) => (
-                                        <Card key={index} className="p-4 col-span-1">
+                                        <Card 
+                                            key={index}
+                                            className="p-4 col-span-1 hover:bg-muted/50 cursor-pointer"
+                                            onClick={() => router.visit(route('analyses.show', { analysis: analysis.id }))}
+                                        >
                                             <h4 className="font-medium">Methode: {analysis.methode}</h4>
                                             <h3 className="font-medium">Resultaat: {analysis.resultaat}</h3>
                                             <p className="text-sm text-gray-500">Gedaan op: {new Date(analysis.datum).toLocaleDateString()}</p>

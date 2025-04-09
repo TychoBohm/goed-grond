@@ -19,8 +19,9 @@ function LatestProjects({ projects }: { projects: { data: Project[] } }) {
         <div className="border-sidebar-border/70 dark:border-sidebar-border relative min-h-[87.5vh] overflow-hidden rounded-xl border">
             <div className="flex size-full flex-col items-center justify-between gap-4 p-4">
                 <TableCaption>Een lijst van de laatste 10 projecten.</TableCaption>
-                <Table className="w-full">
-                    <TableHeader>
+                {projects.data && projects.data.length > 0 ? (
+                    <Table className="w-full">
+                        <TableHeader>
                         <TableRow>
                             <TableHead>Titel</TableHead>
                             <TableHead>Opdrachtgever</TableHead>
@@ -41,9 +42,14 @@ function LatestProjects({ projects }: { projects: { data: Project[] } }) {
                                         <TableCell>{project.opdrachtgever}</TableCell>
                                     </TableRow>
                                 ))}
-                    </TableBody>
-                </Table>
-                <Link href={route('projects.index')} className="mb-6 block" tabIndex={3}>
+                        </TableBody>
+                    </Table>
+                ) : (
+                    <div className="flex items-center justify-center p-4">
+                        <p className="text-lg text-gray-500">Geen projecten beschikbaar</p>
+                    </div>
+                )}
+                <Link href="/projects" className="mb-6 block" tabIndex={3}>
                     Bekijk alle projecten
                 </Link>
             </div>
@@ -92,7 +98,7 @@ function LatestAnalysis({ analyses }: { analyses: { data: Analysis[] } }) {
                         <p className="text-lg text-gray-500">Geen analyses beschikbaar</p>
                     </div>
                 )}
-                <Link href="#" className="mb-6 block" tabIndex={3}>
+                <Link href="/analyses" className="mb-6 block" tabIndex={3}>
                     Bekijk alle analyses
                 </Link>
             </div>
