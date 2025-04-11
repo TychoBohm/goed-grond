@@ -19,41 +19,24 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 interface AnalysisForm {
-    method: string;
-    results: number[];
+    methode: string;
+    resultaat: number;
     project_id: number;
     datum: string;
-    [key: string]: string | number | number[];
+    [key: string]: string | number;
 }
 
-export default function Create({ projects }: { projects: Project[] }) {
+export default function Create({ projects, project_id }: { projects: {data: Project[]}, project_id?: number }) {
     const { data, setData, post, processing, errors } = useForm<AnalysisForm>({
-        method: '',
-        results: [],
-        project_id: 0,
+        methode: '',
+        resultaat: 0,
+        project_id: project_id || 0,
         datum: new Date().toISOString().split('T')[0],
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post(route('analyses.store'));
-    };
-
-    const addResultItem = () => {
-        setData('results', [...data.results, 0]);
-    };
-
-    const updateResultItem = (index: number, value: number) => {
-        const newResults = [...data.results];
-        newResults[index] = value;
-        setData('results', newResults);
-    };
-
-    const removeResultItem = (index: number) => {
-        setData(
-            'results',
-            data.results.filter((_, i) => i !== index),
-        );
     };
 
     return (
@@ -71,10 +54,10 @@ export default function Create({ projects }: { projects: Project[] }) {
                                 required
                                 autoFocus
                                 tabIndex={1}
-                                value={data.method}
-                                onChange={(e) => setData('method', e.target.value)}
+                                value={data.methode}
+                                onChange={(e) => setData('methode', e.target.value)}
                             />
-                            <InputError message={errors.method} />
+                            <InputError message={errors.methode} />
                         </div>
 
                         <div className="grid gap-2">
@@ -87,7 +70,7 @@ export default function Create({ projects }: { projects: Project[] }) {
                                 onChange={(e) => setData('project_id', parseInt(e.target.value))}
                             >
                                 <option value="">Selecteer een project</option>
-                                {projects.map((project) => (
+                                {projects.data.map((project) => (
                                     <option key={project.id} value={project.id}>
                                         {project.titel}
                                     </option>
@@ -109,25 +92,16 @@ export default function Create({ projects }: { projects: Project[] }) {
                         </div>
 
                         <div className="grid gap-2">
-                            <Label>Resultaten</Label>
-                            {data.results.map((result, index) => (
-                                <div key={index} className="flex gap-2">
-                                    <Input
-                                        type="number"
-                                        step="any"
-                                        placeholder="Resultaat"
-                                        value={result}
-                                        onChange={(e) => updateResultItem(index, parseFloat(e.target.value))}
-                                    />
-                                    <Button type="button" variant="destructive" size="sm" onClick={() => removeResultItem(index)}>
-                                        Verwijder
-                                    </Button>
-                                </div>
-                            ))}
-                            <Button type="button" variant="outline" size="sm" onClick={addResultItem}>
-                                Voeg een resultaat toe
-                            </Button>
-                            <InputError message={errors.results} />
+                            <Label htmlFor="resultaat">Resultaat</Label>
+                            <Input
+                                id="resultaat"
+                                type="number"
+                                step="any"
+                                required
+                                value={data.resultaat}
+                                onChange={(e) => setData('resultaat', parseFloat(e.target.value))}
+                            />
+                            <InputError message={errors.resultaat} />
                         </div>
                     </div>
 
@@ -138,4 +112,4 @@ export default function Create({ projects }: { projects: Project[] }) {
             </div>
         </AppLayout>
     );
-} 
+}

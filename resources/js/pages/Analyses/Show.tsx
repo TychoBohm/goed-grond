@@ -40,32 +40,39 @@ export default function Show({ analysis }: { analysis: {data: Analysis} }) {
                 <div className="grid gap-6">
                     <div className="grid gap-2">
                         <h2 className="text-lg font-semibold">Basis Informatie</h2>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-3 gap-4">
                             <div>
                                 <p className="text-sm text-muted-foreground">ID</p>
                                 <p>{analysis.data.id}</p>
                             </div>
                             <div>
-                                <p className="text-sm text-muted-foreground">Methode</p>
-                                <p>{analysis.data.methode}</p>
+                                <p className="text-sm text-muted-foreground">Project</p>
+                                <TextLink href={route('projects.show', { id: analysis.data.project_id })}>
+                                    {analysis.data.project_name}
+                                </TextLink>
                             </div>
                             <div>
                                 <p className="text-sm text-muted-foreground">Datum</p>
-                                <p>{analysis.data.datum}</p>
-                            </div>
-                            <div>
-                                <p className="text-sm text-muted-foreground">Project</p>
-                                <TextLink href={route('projects.show', { id: analysis.data.project_id })}>
-                                    {analysis.data.project_id}
-                                </TextLink>
+                                <p>{new Date(analysis.data.datum).toLocaleDateString('nl-NL', { 
+                                    year: 'numeric', 
+                                    month: '2-digit', 
+                                    day: '2-digit' 
+                                })}</p>
                             </div>
                         </div>
                     </div>
 
                     <div className="grid gap-2">
-                        <h2 className="text-lg font-semibold">Resultaten</h2>
-                        <div className="grid gap-2">
-                            <p>{analysis.data.resultaten}</p>
+                        <h2 className="text-lg font-semibold">Analyse Details</h2>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <p className="text-sm text-muted-foreground">Methode</p>
+                                <p>{analysis.data.methode}</p>
+                            </div>
+                            <div>
+                                <p className="text-sm text-muted-foreground">Resultaat</p>
+                                <p>{analysis.data.resultaat}</p>
+                            </div>
                         </div>
                     </div>
                 </div>

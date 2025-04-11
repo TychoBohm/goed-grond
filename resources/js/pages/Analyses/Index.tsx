@@ -19,6 +19,7 @@ const destroy = (id: number) => {
 };
 
 export default function Index({ analyses }: { analyses: PaginatedData<Analysis> }) {
+
     const handleRowClick = (id: number) => {
         router.visit(route('analyses.show', { id }));
     };
@@ -38,6 +39,7 @@ export default function Index({ analyses }: { analyses: PaginatedData<Analysis> 
                         <TableRow>
                             <TableHead className="w-[100px]">ID</TableHead>
                             <TableHead>Methode</TableHead>
+                            <TableHead>Resultaat</TableHead>
                             <TableHead>Datum</TableHead>
                             <TableHead>Project</TableHead>
                             <TableHead></TableHead>
@@ -56,8 +58,9 @@ export default function Index({ analyses }: { analyses: PaginatedData<Analysis> 
                                     >
                                         <TableCell className="font-medium">{analysis.id}</TableCell>
                                         <TableCell>{analysis.methode}</TableCell>
-                                        <TableCell>{analysis.datum}</TableCell>
-                                        <TableCell>{analysis.project_id || 'N/A'}</TableCell>
+                                        <TableCell>{analysis.resultaat}</TableCell>
+                                        <TableCell>{new Date(analysis.datum).toLocaleDateString('nl-NL', { year: 'numeric', month: '2-digit', day: '2-digit' })}</TableCell>
+                                        <TableCell>{analysis.project_name || 'N/A'}</TableCell>
                                         <TableCell className="space-x-2 text-right">
                                             <TextLink href={route('analyses.edit', { id: analysis.id })} onClick={(e) => e.stopPropagation()}>
                                                 Wijzig

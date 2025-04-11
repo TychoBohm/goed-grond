@@ -20,40 +20,23 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 interface AnalysisForm {
     methode: string;
-    resultaten: number[];
+    resultaat: number;
     project_id: number;
     datum: string;
-    [key: string]: string | number | number[];
+    [key: string]: string | number;
 }
 
 export default function Edit({ analysis, projects }: { analysis: {data: Analysis}; projects: {data: Project[]} }) {
     const { data, setData, put, processing, errors } = useForm<AnalysisForm>({
         methode: analysis.data.methode,
-        resultaten: analysis.data.resultaten,
+        resultaat: analysis.data.resultaat,
         project_id: analysis.data.project_id,
-        datum: analysis.data.datum,
+        datum: new Date(analysis.data.datum).toISOString().split('T')[0],
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         put(route('analyses.update', { id: analysis.data.id }));
-    };
-
-    const addResultItem = () => {
-        setData('resultaten', [...data.resultaten, 0]);
-    };
-
-    const updateResultItem = (index: number, value: number) => {
-        const newResults = [...data.resultaten];
-        newResults[index] = value;
-        setData('resultaten', newResults);
-    };
-
-    const removeResultItem = (index: number) => {
-        setData(
-            'resultaten',
-            data.resultaten.filter((_, i) => i !== index),
-        );
     };
 
     return (
@@ -71,7 +54,7 @@ export default function Edit({ analysis, projects }: { analysis: {data: Analysis
                                 required
                                 autoFocus
                                 tabIndex={1}
-                                value={analysis.data.methode}
+                                value={data.methode}
                                 onChange={(e) => setData('methode', e.target.value)}
                             />
                             <InputError message={errors.methode} />
@@ -109,25 +92,16 @@ export default function Edit({ analysis, projects }: { analysis: {data: Analysis
                         </div>
 
                         <div className="grid gap-2">
-                            <Label>Resultaten</Label>
-                            {data.resultaten.map((result, index) => (
-                                <div key={index} className="flex gap-2">
-                                    <Input
-                                        type="number"
-                                        step="any"
-                                        placeholder="Resultaat"
-                                        value={result}
-                                        onChange={(e) => updateResultItem(index, parseFloat(e.target.value))}
-                                    />
-                                    <Button type="button" variant="destructive" size="sm" onClick={() => removeResultItem(index)}>
-                                        Verwijder
-                                    </Button>
-                                </div>
-                            ))}
-                            <Button type="button" variant="outline" size="sm" onClick={addResultItem}>
-                                Voeg een resultaat toe
-                            </Button>
-                            <InputError message={errors.resultaten} />
+                            <Label htmlFor="resultaat">Resultaat</Label>
+                            <Input
+                                id="resultaat"
+                                type="number"
+                                step="any"
+                                required
+                                value={data.resultaat}
+                                onChange={(e) => setData('resultaat', parseFloat(e.target.value))}
+                            />
+                            <InputError message={errors.resultaat} />
                         </div>
                     </div>
 
@@ -138,4 +112,4 @@ export default function Edit({ analysis, projects }: { analysis: {data: Analysis
             </div>
         </AppLayout>
     );
-} 
+}
